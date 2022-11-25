@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "446725855315",
+    "project_id": "mosiot",
+    "storage_bucket": "mosiot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446725855315:android:dd06c5f863cf89519a8ea6",
+        "android_client_info": {
+          "package_name": "io.patient.dlsi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446725855315-q711pi1n4gqa6em3k7ouv83joqbi24hv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBENGR7EQ1Hd_6rt-A3O9gKgIRBlRkhjRo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446725855315-q711pi1n4gqa6em3k7ouv83joqbi24hv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

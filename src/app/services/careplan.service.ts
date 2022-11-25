@@ -17,7 +17,7 @@ import { CareActivity } from '../models/careActivity.model';
   providedIn: 'root'
 })
 export class CarePlanService {
-
+  idUser: number;
   color: string;
 constructor(private http: HttpClient) {
 
@@ -103,8 +103,8 @@ public getCareActivityByTimeByIdScenario( uid: number): Observable<object>{
   return this.http.get <CareActivity>(`${environment.base_url}/IMCareActivity/ReadByTime?idscenario=${uid}`);
 }
 
-public changeStateNotification( id: number , newState: number): Observable<object> {
-  return this.http.post(`${environment.base_url}/IMCareActivity/ChangeState?p_oid=${id}&originstate=1&targetstate=${newState}`,null);
+public changeStateNotification( id: number , newState: number, idUser: number): Observable<object> {
+  return this.http.post(`${environment.base_url}/IMCareActivity/ChangeState?p_oid=${id}&originstate=1&targetstate=${newState}&p_iduser=${idUser}`,null);
 }
 
 

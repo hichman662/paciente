@@ -26,6 +26,7 @@ export class Tab0Page implements OnInit ,ViewWillEnter{
   public systolic: any;
   public diastolic: any;
   public color: string = 'Pendent';
+  public userIdChangeStatus: number;
   arraySystolic: number[]=[];
   arrayDistolic: number[]=[];
   telemetryText: string='';
@@ -54,10 +55,10 @@ public careActivityByTime: CareActivityByTime[] = null;
   }
 
  ngOnInit(){
-  /* this.storage.get('idScenario').then(async val => {
-      this.idScenario = val;
-      await this.callCareActivityByTime();
-    }); */
+   this.storage.get('idPatient').then( val => {
+      this.userIdChangeStatus = val;
+      console.log(this.userIdChangeStatus);
+    });
 
 }
 
@@ -132,6 +133,8 @@ public careActivityByTime: CareActivityByTime[] = null;
         console.log(err);
     });
   }
+
+
   handleChange(ev,id) {
     if(ev.detail.value === '1'){
       this.presentToast('warning','can not change Complete Activity or Discard Activity to Pendent');
@@ -148,12 +151,13 @@ public careActivityByTime: CareActivityByTime[] = null;
     else if((ev.detail.value === 3)){
       this.color='Complete';
     }
-this.careplanService.changeStateNotification(id,ev.detail.value)
+this.careplanService.changeStateNotification(id,ev.detail.value,this.userIdChangeStatus)
   .subscribe((res: any)=>{
     this.presentToast('success','The notification state has changed successfully.');
     this.loadNotification = false;
 
 });
+
 
 }
 

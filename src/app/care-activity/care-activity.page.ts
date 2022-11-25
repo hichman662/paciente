@@ -19,6 +19,7 @@ export class CareActivityPage implements OnInit,ViewWillEnter {
   textByValue = false;
   loadNotification = false;
   private idScenario: number ;
+  public userIdChangeStatus: number;
   public careActivityByTime: CareActivityByTime[] = [];
     constructor(
       private careplanService: CarePlanService,
@@ -26,7 +27,6 @@ export class CareActivityPage implements OnInit,ViewWillEnter {
     public toastController: ToastController,
     private storage: Storage
     ) { }
-
   ionViewWillEnter(): void {
     this.storage.get('idScenario').then(async val => {
       this.idScenario = val;
@@ -41,7 +41,9 @@ export class CareActivityPage implements OnInit,ViewWillEnter {
   }
 
     ngOnInit() {
-
+      this.storage.get('idPatient').then( val => {
+        this.userIdChangeStatus = val;
+      });
     }
 
     callCareActivityByTime() {
@@ -68,7 +70,7 @@ export class CareActivityPage implements OnInit,ViewWillEnter {
     else if((ev.detail.value === 3)){
       this.color='Complete';
     }
-this.careplanService.changeStateNotification(id,ev.detail.value)
+this.careplanService.changeStateNotification(id,ev.detail.value,this.userIdChangeStatus)
   .subscribe((res: any)=>{
     this.presentToast('success','The notification state has changed successfully.');
     this.loadNotification = false;

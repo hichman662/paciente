@@ -98,7 +98,7 @@ getEscenarioDePaciente(token: string){
     this.patientService.getPatientByEmail(email)
     .subscribe((res: Patient ) => {
       console.log(res);
-      this.storage.set('idPatient',res[0].Id);
+      this.storage.set('idPatient',res[0].UserData.Id);
        this.storage.set('NamePatient',res[0].UserData.Name);
     }, (err) => {
       console.log(err);

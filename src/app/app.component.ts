@@ -1,3 +1,4 @@
+import { OnInit } from '@angular/core';
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component } from '@angular/core';
 import { Storage } from '@ionic/storage';
@@ -5,15 +6,18 @@ import { Router, RouterEvent } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
+import { FirebaseX } from '@awesome-cordova-plugins/firebase-x/ngx';
+import { FCM } from '@ionic-native/fcm/ngx';
+import { Platform } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   active = '';
   isModalOpen = false;
-
+  pushes: any = [];
   NAV = [
     {
       name: 'About',
@@ -34,8 +38,15 @@ export class AppComponent {
   showModal = false;
   handlerMessage = '';
   roleMessage = '';
-  constructor(public storage: Storage,private router: Router,
-    public idle: Idle, private keepalive: Keepalive,private alertController: AlertController) {
+  constructor(
+    private fcm: FCM,
+    public plt: Platform,
+    public storage: Storage,
+    private router: Router,
+    public idle: Idle,
+     private keepalive: Keepalive,
+     private alertController: AlertController,
+     private firebaseX: FirebaseX) {
     this.storage.create();
     this.router.events.subscribe((event: RouterEvent) => {
       this.active = event.url;
@@ -79,7 +90,41 @@ export class AppComponent {
  keepalive.onPing.subscribe(() => this.lastPing = new Date());
  console.log(this.lastPing);
  this.reset();
+
+//Notifications
+
+this.plt.ready()
+.then(() => {
+  this.fcm.onNotification().subscribe(data => {
+    if (data.wasTapped) {
+      console.log('Received in background');
+    } else {
+      console.log('Received in foreground');
+    };
+  });
+
+  this.fcm.onTokenRefresh().subscribe(token => {
+    // Register your new token in your back-end if you want
+    // backend.registerToken(token);
+  });
+});
+
+
   }
+
+
+
+ngOnInit(): void {
+      this.firebaseX.getToken()
+      .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
+      .catch(error => console.error('Error getting token', error));
+
+    this.firebaseX.onMessageReceived()
+      .subscribe(data => console.log(`User opened a notification ${data}`));
+
+    this.firebaseX.onTokenRefresh()
+      .subscribe((token: string) => console.log(`Got a new token ${token}`));
+}
 
  reset() {
      this.idle.watch();
@@ -129,5 +174,18 @@ export class AppComponent {
    setOpen(isOpen: boolean) {
      this.showModal = isOpen;
    }
+
+   subscribeToTopic() {
+    this.fcm.subscribeToTopic('enappd');
+  }
+  getToken() {
+    this.fcm.getToken().then(token => {
+      // Register your new token in your back-end if you want
+      // backend.registerToken(token);
+    });
+  }
+  unsubscribeFromTopic() {
+    this.fcm.unsubscribeFromTopic('enappd');
+  }
 }
 

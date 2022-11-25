@@ -18,8 +18,8 @@ import { SpeechRecognition } from '@ionic-native/speech-recognition/ngx';
 import { TextToSpeech } from '@ionic-native/text-to-speech/ngx';
 import { Platform } from '@ionic/angular';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
-
-
+import { FirebaseX } from '@awesome-cordova-plugins/firebase-x/ngx';
+import { FCM } from '@ionic-native/fcm/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -39,7 +39,7 @@ import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
     MatInputModule,
     NgIdleKeepaliveModule.forRoot()
     ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },SpeechRecognition,TextToSpeech,Platform],
+  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SpeechRecognition, TextToSpeech, Platform, FirebaseX, FCM],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
